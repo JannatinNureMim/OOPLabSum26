@@ -1,0 +1,40 @@
+class BankAccount {
+    private int balance;
+    private boolean open = true;
+
+    public BankAccount(int balance) {
+        this.balance = balance;
+    }
+
+    public synchronized int getBalance() {
+        return balance;
+    }
+
+    public synchronized void deposit(int amount) {
+        if (!open) {
+            throw new IllegalStateException("Account is closed");
+        }
+        balance += amount;
+    }
+
+    public synchronized void withdraw(int amount) {
+        if (!open) {
+            throw new IllegalStateException("Account is closed");
+        }
+        if (amount > balance) {
+            throw new IllegalArgumentException("Not enough money");
+        }
+        balance -= amount;
+    }
+
+    public synchronized void close() {
+        if (!open) {
+            throw new IllegalStateException("Account is already closed");
+        }
+        open = false;
+    }
+
+    public synchronized boolean isOpen() {
+        return open;
+    }
+}
