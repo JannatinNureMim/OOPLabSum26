@@ -1,0 +1,40 @@
+class BankAccount {
+    private int balance = 0;
+    private boolean isOpen = false;
+
+    synchronized void open() throws BankAccountActionInvalidException {
+        if (isOpen) {
+            throw new BankAccountActionInvalidException();
+        }
+        isOpen = true;
+        balance = 0;
+    }
+
+    synchronized void close() throws BankAccountActionInvalidException {
+        if (!isOpen) {
+            throw new BankAccountActionInvalidException();
+        }
+        isOpen = false;
+    }
+
+    synchronized int getBalance() throws BankAccountActionInvalidException {
+        if (!isOpen) {
+            throw new BankAccountActionInvalidException();
+        }
+        return balance;
+    }
+
+    synchronized void deposit(int amount) throws BankAccountActionInvalidException {
+        if (!isOpen || amount < 0) {
+            throw new BankAccountActionInvalidException();
+        }
+        balance += amount;
+    }
+
+    synchronized void withdraw(int amount) throws BankAccountActionInvalidException {
+        if (!isOpen || amount < 0 || amount > balance) {
+            throw new BankAccountActionInvalidException();
+        }
+        balance -= amount;
+    }
+}
